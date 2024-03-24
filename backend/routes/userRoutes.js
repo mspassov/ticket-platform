@@ -2,6 +2,7 @@ const express = require('express');
 const asyncHandler = require('express-async-handler');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
+const protectRoute = require('../middleware/authMiddleware');
 const Users = require('../models/userModel');
 const router = express.Router();
 
@@ -67,6 +68,16 @@ router.post('/login',asyncHandler(async (req, res) =>{
         res.status(401);
         throw new Error('Invalid credentials');
     }
+}))
+
+//Get user information
+router.get('/profile', protectRoute, asyncHandler( async (req, res) =>{
+    const user ={
+        id: req.user._id,
+        full_name: req.user.full_name,
+        email: req.user.email
+    }
+    res.status(200).json(user);
 }))
 
 
