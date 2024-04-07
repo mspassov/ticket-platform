@@ -48,7 +48,7 @@ const Register = () => {
     }
 
     const userObj = {
-      full_name: formData.full_name,
+      name: formData.full_name,
       email: formData.email,
       password: formData.password,
     };

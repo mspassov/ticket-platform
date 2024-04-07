@@ -16,6 +16,7 @@ router.post('/register', asyncHandler(async (req, res) =>{
 
     //Simple validation
     if(!name || !email || !password){
+        console.log(name, email, password);
         res.status(400);
         throw new Error("Please enter all fields");
     }

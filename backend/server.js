@@ -1,6 +1,7 @@
 const express = require('express');
 const errorHandler = require('./middleware/errorMiddleware');
 const connectDB = require('./config/db');
+const cors = require('cors');
 const dotenv = require('dotenv').config();
 const PORT = process.env.PORT || 8000;
 
@@ -11,7 +12,9 @@ const app = express();
 
 //middleware
 app.use(express.json());    //allows request body to be JSON
+app.use(cors());
 app.use(express.urlencoded({extended: false})); //allows request body to be URLencoded format
+
 
 app.get('/', (req, res) =>{
     res.status(201).json({message: "Welcome to the ticketing platform"});
