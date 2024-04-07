@@ -4,8 +4,7 @@ const API_URL = '/api/users';
 
 //Register the user
 const registerUser = async (userData) =>{
-    
-    console.log(userData);
+    // console.log(userData);
     // const response = await fetch(`${API_URL}/register`, {
     //     method: 'POST', 
     //     body: {
@@ -18,7 +17,6 @@ const registerUser = async (userData) =>{
     // console.log(data);
 
     const response = await axios.post(`${API_URL}/register`, userData);
-
 
     if(response.data){
         localStorage.setItem('userInfo', JSON.stringify(response.data));
