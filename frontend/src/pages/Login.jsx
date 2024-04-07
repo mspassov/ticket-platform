@@ -2,6 +2,8 @@ import React from "react";
 import { useState } from "react";
 import { FaSignInAlt } from "react-icons/fa";
 import { toast } from "react-toastify";
+import { login } from "../features/auth/authSlice";
+import { useSelector, useDispatch } from "react-redux";
 
 const Login = () => {
   const [formData, setFormData] = useState({
@@ -9,9 +11,20 @@ const Login = () => {
     password: "",
   });
 
+  const dispatch = useDispatch();
+  const { user, isLoading, isSuccess, message } = useSelector(
+    (state) => state.auth
+  );
+
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log("Log in successful");
+
+    const userObj = {
+      email: formData.email,
+      password: formData.password,
+    };
+
+    dispatch(login(userObj));
   };
 
   return (
@@ -28,7 +41,7 @@ const Login = () => {
           <div className="form-group">
             <input
               required
-              type="text"
+              type="email"
               className="form-control"
               id="email"
               value={formData.email}

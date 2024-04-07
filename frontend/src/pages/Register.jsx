@@ -2,6 +2,8 @@ import React from "react";
 import { useState } from "react";
 import { FaUser } from "react-icons/fa";
 import { toast } from "react-toastify";
+import { useSelector, useDispatch } from "react-redux";
+import { register } from "../features/auth/authSlice";
 
 const Register = () => {
   const [formData, setFormData] = useState({
@@ -10,6 +12,13 @@ const Register = () => {
     password: "",
     confirmPassword: "",
   });
+
+  const dispatch = useDispatch();
+
+  //Get state from the auth Slice
+  const { user, isLoading, isSuccess, message } = useSelector(
+    (state) => state.auth
+  );
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -23,6 +32,15 @@ const Register = () => {
       }));
       return;
     }
+
+    const userObj = {
+      full_name: formData.full_name,
+      email: formData.email,
+      password: formData.password,
+    };
+
+    //Dispatch the register function from authSlice
+    dispatch(register(userObj));
   };
 
   return (
@@ -55,7 +73,7 @@ const Register = () => {
           <div className="form-group">
             <input
               required
-              type="text"
+              type="email"
               className="form-control"
               id="email"
               value={formData.email}
