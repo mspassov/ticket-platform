@@ -1,4 +1,5 @@
 import React from "react";
+import Spinner from "../components/Spinner";
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { FaUser } from "react-icons/fa";
@@ -56,6 +57,10 @@ const Register = () => {
     //Dispatch the register function from authSlice
     dispatch(register(userObj));
   };
+
+  if (isLoading) {
+    return <Spinner />;
+  }
 
   return (
     <>

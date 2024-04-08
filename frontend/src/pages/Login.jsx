@@ -1,8 +1,10 @@
 import React from "react";
-import { useState } from "react";
+import Spinner from "../components/Spinner";
+import { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import { FaSignInAlt } from "react-icons/fa";
 import { toast } from "react-toastify";
-import { login } from "../features/auth/authSlice";
+import { login, reset } from "../features/auth/authSlice";
 import { useSelector, useDispatch } from "react-redux";
 
 const Login = () => {
@@ -12,9 +14,22 @@ const Login = () => {
   });
 
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const { user, isLoading, isSuccess, isError, message } = useSelector(
     (state) => state.auth
   );
+
+  useEffect(() => {
+    if (isError) {
+      toast.error(message);
+    }
+    //Re-direct to homepage when log in is successful
+    if (isSuccess || user) {
+      navigate("/");
+    }
+
+    dispatch(reset());
+  }, [isError, isSuccess, user, message, navigate, dispatch]);
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -27,11 +42,15 @@ const Login = () => {
     dispatch(login(userObj));
   };
 
+  if (isLoading) {
+    return <Spinner />;
+  }
+
   return (
     <>
       <section className="heading">
         <h1>
-          <FaSignInAlt /> Login
+          <FaSignInAlt /> Sign In
         </h1>
         <p>Pick up where you left off!</p>
       </section>
