@@ -16,7 +16,54 @@ router.get('/get', protectRoute, asyncHandler(async (req, res) =>{
 
     const tickets = await Tickets.find({user: req.user.id})
 
-    res.status(200).json({tickets})
+    res.status(200).json(tickets)
+}))
+
+//GET single ticket by id
+router.get('/get/:id', protectRoute, asyncHandler(async (req, res) =>{
+    const user = await Users.findById(req.user.id);
+    if(!user){
+        res.status(401)
+        throw new Error("User not found");
+    }
+
+    const ticket = await Tickets.findById(req.params.id);
+    if(!ticket){
+        res.status(401);
+        throw new Error('Ticket does not exist');
+    }
+
+    if(ticket.user.toString() !== req.user.id){
+        res.status(401)
+        throw new Error('Ticket not authorized');
+    }
+
+    res.status(201).json(ticket);
+}))
+
+//PUT update single ticket by id
+router.put('/update/:id', protectRoute, asyncHandler(async (req, res) =>{
+    const user = await Users.findById(req.user.id);
+    if(!user){
+        res.status(401)
+        throw new Error("User not found");
+    }
+
+    const ticket = await Tickets.findById(req.params.id);
+    if(!ticket){
+        res.status(401);
+        throw new Error('Ticket does not exist');
+    }
+
+    if(ticket.user.toString() !== req.user.id){
+        res.status(401)
+        throw new Error('Ticket not authorized');
+    }
+
+    //update request
+    const updatedTicket = await Tickets.findByIdAndUpdate(req.params.id, req.body, {new: true});
+
+    res.status(201).json({success: true, payload: updatedTicket});
 }))
 
 //POST create tickets for a specific user
@@ -44,6 +91,33 @@ router.post('/create', protectRoute, asyncHandler(async (req, res) =>{
 
     res.status(201).json(ticket);
 }))
+
+//DELETE single ticket by id
+router.delete('/delete/:id', protectRoute, asyncHandler(async (req, res) =>{
+    const user = await Users.findById(req.user.id);
+    if(!user){
+        res.status(401)
+        throw new Error("User not found");
+    }
+
+    const ticket = await Tickets.findById(req.params.id);
+    if(!ticket){
+        res.status(401);
+        throw new Error('Ticket does not exist');
+    }
+
+    if(ticket.user.toString() !== req.user.id){
+        res.status(401)
+        throw new Error('Ticket not authorized');
+    }
+
+    //Perform delete request
+    const delTicket = await Tickets.deleteOne(ticket);
+
+    res.status(201).json({success: true, payload: delTicket});
+}))
+
+
 
 
 module.exports = router;
