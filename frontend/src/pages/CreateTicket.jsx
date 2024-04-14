@@ -23,7 +23,7 @@ const CreateTicket = () => {
 
     if (isSuccess) {
       dispatch(reset());
-      navigate("/tickets");
+      navigate("/my-tickets");
     }
 
     dispatch(reset());
