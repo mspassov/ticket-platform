@@ -5,6 +5,10 @@ const asyncHandler = require('express-async-handler');
 const Users = require('../models/userModel');
 const Tickets = require('../models/ticketModel');
 
+//Used to re-route into the notes router
+const noteRouter = require('./noteRoutes');
+router.use('/get/:id/notes', noteRouter);
+
 //GET tickets for a specific user
 router.get('/get', protectRoute, asyncHandler(async (req, res) =>{
     //Find the user and store the ID, so that we can get the corresponding tickets
@@ -116,8 +120,6 @@ router.delete('/delete/:id', protectRoute, asyncHandler(async (req, res) =>{
 
     res.status(201).json({success: true, payload: delTicket});
 }))
-
-
 
 
 module.exports = router;
