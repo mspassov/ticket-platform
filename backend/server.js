@@ -9,10 +9,15 @@ connectDB();
 
 const app = express();
 
+//Setting up static folder for Production
+app.use(express.static(path.join(__dirname, 'public')));
+
 //middleware
 app.use(express.json());    //allows request body to be JSON
 app.use(express.urlencoded({extended: false})); //allows request body to be URLencoded format
 
+//Cors Middleware
+app.use(cors());
 
 app.get('/', (req, res) =>{
     res.status(201).json({message: "Welcome to the ticketing platform"});
