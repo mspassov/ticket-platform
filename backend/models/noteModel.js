@@ -16,7 +16,7 @@ const noteSchema = mongoose.Schema({
         required: true,
     },
     isStaff: {
-        type: String,
+        type: Boolean,
         default: false
     },
     staffId: {
